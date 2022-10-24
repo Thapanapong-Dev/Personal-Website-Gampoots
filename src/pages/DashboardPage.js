@@ -7,6 +7,7 @@ import { Skills } from '../components/Skills'
 import { Projects } from '../components/Projects'
 import { Contact } from '../components/Contact'
 import { useLocation } from 'react-router-dom'
+import { ProjectForm } from "../components/ProjectForm";
 
 export default function DashboardPage() {
     const dispatch = useDispatch()
@@ -15,10 +16,7 @@ export default function DashboardPage() {
     })
     return (
       <div>
-        <Banner />
-        <Skills />
-        <Projects />
-        <Contact />
+        <ProjectForm />
       </div>
     )
 }
