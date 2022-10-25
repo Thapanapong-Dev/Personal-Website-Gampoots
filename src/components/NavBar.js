@@ -1,16 +1,16 @@
 import react, { useState, useEffect } from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
-import logo from '../assets/img/logo.svg';
-import navIcon1 from '../assets/img/nav-icon1.svg';
-import navIcon2 from '../assets/img/nav-icon2.svg';
-import navIcon3 from '../assets/img/nav-icon3.svg';
-import { HashLink } from 'react-router-hash-link';
-import { NavLink } from 'react-router-dom';
-import { useSelector } from 'react-redux'
-import Fade from 'react-bootstrap/Fade'
+import logo from "../assets/img/logo.svg";
+import navIcon1 from "../assets/img/nav-icon1.svg";
+import navIcon2 from "../assets/img/nav-icon2.svg";
+import navIcon3 from "../assets/img/nav-icon3.svg";
+import { HashLink } from "react-router-hash-link";
+import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Fade from "react-bootstrap/Fade";
 
 export const NavBar = () => {
-  const page = useSelector((state) => state.page.value)
+  const page = useSelector((state) => state.page.value);
 
   const [activeLink, setActiveLink] = useState(page);
   const [scrolled, setScrolled] = useState(false);
@@ -31,25 +31,26 @@ export const NavBar = () => {
   }, []);
 
   const onUpdateClassNameActiveLink = (value) => {
-    if (activeLink === value ) {
-      return "active navbar-link"
-    } 
-    return "navbar-link"
-  }
+    if (activeLink === value) {
+      return "active navbar-link";
+    }
+    return "navbar-link";
+  };
 
   useEffect(() => {
-    setActiveLink(page)
-    if (page === "/")
-      setFade(true)
-    else
-      setFade(false)
-  })
+    setActiveLink(page);
+    if (page === "/") setFade(true);
+    else setFade(false);
+  });
 
   const subNavBar = (value) => {
     if (value === "/") {
       return (
         <Fade in={fade}>
-          <Nav className="sub-navbar-home flex-column position-fixed top-50 end-0 translate-middle-y" bg="dark">
+          <Nav
+            className="sub-navbar-home flex-column position-fixed top-50 end-0 translate-middle-y"
+            bg="dark"
+          >
             <Nav.Link href="#skills" id={"sub-navbar-home"}>
               Skills
             </Nav.Link>
@@ -61,35 +62,54 @@ export const NavBar = () => {
             </Nav.Link>
           </Nav>
         </Fade>
-      )
+      );
     }
-  }
+  };
 
   return (
     <div>
-      <Navbar expand="md" className={scrolled ? "scrolled" : ""}>
+      <Navbar
+        collapseOnSelect
+        expand="md"
+        className={scrolled ? "scrolled" : ""}
+      >
         <Container>
-          <Navbar.Brand as={NavLink} to="/"
+          <Navbar.Brand
+            as={NavLink}
+            to="/"
             className={onUpdateClassNameActiveLink("")}
-            onClick={() => window.scrollTo(0, 0)}>
+            onClick={() => window.scrollTo(0, 0)}
+          >
             <img src={logo} alt="Logo" />
           </Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav">
+          <Navbar.Toggle aria-controls="responsive-navbar-nav">
             <span className="navbar-toggler-icon"></span>
           </Navbar.Toggle>
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
-              <Nav.Link as={NavLink} to="/"
+              <Nav.Link
+                as={NavLink}
+                href="#"
+                to="/"
                 className={onUpdateClassNameActiveLink("/")}
-                onClick={() => window.scrollTo(0, 0)}>
+                onClick={() => window.scrollTo(0, 0)}
+              >
                 Home
               </Nav.Link>
-              <Nav.Link as={NavLink} to="/dashboard" 
-                className={onUpdateClassNameActiveLink("dashboard")}>
+              <Nav.Link
+                href="#"
+                as={NavLink}
+                to="/dashboard"
+                className={onUpdateClassNameActiveLink("dashboard")}
+              >
                 Dashboard
               </Nav.Link>
-              <Nav.Link as={NavLink} to="/login"
-                className={onUpdateClassNameActiveLink("login")}>
+              <Nav.Link
+                href="#"
+                as={NavLink}
+                to="/login"
+                className={onUpdateClassNameActiveLink("login")}
+              >
                 Login
               </Nav.Link>
             </Nav>
@@ -110,12 +130,11 @@ export const NavBar = () => {
                   <span>Let’s Connect</span>
                 </button>
               </HashLink>
-            </span> 
-          </Navbar.Collapse> 
+            </span>
+          </Navbar.Collapse>
         </Container>
       </Navbar>
       {subNavBar(page)}
     </div>
   );
 };
-

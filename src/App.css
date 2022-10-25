@@ -233,7 +233,7 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 /************ Banner Css ************/
 .banner {
   margin-top: 0;
-  padding: 180px 0 100px 0;
+  padding: 200px 0 100px 0;
   background-image: url('./assets/img/banner-bg_.png');
   background-position: top center;
   background-size: cover;
@@ -642,8 +642,10 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 
 /************ Project Form ************/
 .form {
+  display: flex;
   background: linear-gradient(90.21deg, #AA367C -5.91%, #4A2FBD 111.58%);
-  padding: 60px 0 200px 0;
+  /* padding: 60px 0 200px 0; */
+  padding: 200px 0 100px 0;
 }
 .form img {
   width: 92%;
@@ -653,7 +655,7 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 	font-weight: 700;
   margin-bottom: 30px;
 }
-.form form input, .form form textarea {
+.input-field {
   width: 100%;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.5);
@@ -661,21 +663,22 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   color: #fff;
   margin: 0 0 8px 0;
   padding: 18px 26px;
-  font-weight: 500;
-  font-size: 18px;
+  font-size: 16px;
+  font-weight: 50;
   letter-spacing: 0.8px;
+  
   transition: 0.3s ease-in-out;
 }
-.form form input:focus, .form form textarea:focus {
+.input-field:focus {
   background: rgba(255, 255, 255, 1);
   color: #121212;
 }
-.form form input::placeholder, .form form textarea::placeholder {
+.input-field::placeholder {
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 50;
   color: #fff;
 }
-.form form input:focus::placeholder, .form form textarea:focus::placeholder {
+.input-field:focus::placeholder {
   color: #121212;
   opacity: 0.8;
 }
@@ -686,6 +689,7 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   padding: 14px 48px;
   font-size: 18px;
   margin-top: 25px;
+  margin-bottom: 25px;
   border-radius: 0;
   position: relative;
   transition: 0.3s ease-in-out;
@@ -710,4 +714,16 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 }
 .form-submit:hover::before {
   width: 100%;
+}
+
+/************ All Project ************/
+.all-project {
+  color: black;
+}
+.all-project div {
+  margin-bottom: 0.5rem;
+}
+.all-project div div {
+  font-size: 12px;
+  /* padding-left: 1vh; */
 }
