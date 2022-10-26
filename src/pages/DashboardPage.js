@@ -17,20 +17,17 @@ export default function DashboardPage() {
     dispatch(setPage("dashboard"));
   });
   return (
-    <div>
-      {/* <Banner /> */}
-      <section className="form">
-        <Container>
-          <Row>
-            <Col size={12} md={4}>
-              <ProjectForm />
-            </Col>
-            <Col size={12} md={8}>
-              <AllProject />
-            </Col>
-          </Row>
-        </Container>
-      </section>
-    </div>
+    <section className="form">
+      <Container>
+        <Row>
+          <Col size={12} md={5}>
+            <ProjectForm />
+          </Col>
+          <Col size={12} md={7}>
+            <AllProject />
+          </Col>
+        </Row>
+      </Container>
+    </section>
   );
 }
