@@ -665,7 +665,6 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   font-size: 16px;
   font-weight: 50;
   letter-spacing: 0.8px;
-  
   transition: 0.3s ease-in-out;
 }
 .input-field:focus {
@@ -676,6 +675,10 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   font-size: 16px;
   font-weight: 50;
   color: #fff;
+}
+.input-field-size::placeholder {
+  font-size: 14px;
+  font-weight: 50;
 }
 .input-field:focus::placeholder {
   color: #121212;
@@ -735,6 +738,7 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   cursor: pointer;
   border-radius: 5px;
   width: 8rem;
+  height: 2rem;
 }
 .dropdown {
   position: relative;
@@ -749,6 +753,10 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 .dropdown-content a:hover {background-color: #f1f1f1}
 .dropdown:hover .dropdown-content {
   display: block;
+}
+.dropbtn:hover {
+  background-color: black;
+  color: white;
 }
 .dropdown:hover .dropbtn {
   background-color: black;
