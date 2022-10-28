@@ -133,10 +133,11 @@ export const ProjectForm = () => {
 
   const savePictureLink = () => {
     const values = Object.values(pictureLink);
-    for (let i = 0; i <= values.length; i++) {
-      if (values[i] !== undefined) formDetails.pictureLink.push(values[i]);
-    }
-    console.log("formDetails.pictureLink >> ", formDetails);
+    const values_set = new Set(values);
+    values_set.forEach((value) => {
+      formDetails.pictureLink.push(value);
+    });
+    console.log("formDetails >> ", formDetails);
   };
 
   return (
@@ -223,9 +224,7 @@ export const ProjectForm = () => {
                   type="button"
                   className="dropbtn d-inline mx-2"
                   style={pictureStyle.button}
-                  onClick={() => {
-                    setCountPic(countPic + 1);
-                  }}
+                  onClick={() => setCountPic(countPic + 1)}
                 >
                   add
                 </button>
@@ -290,9 +289,7 @@ export const ProjectForm = () => {
                     type="radio"
                     id={`inline-${priority}-1`}
                     placeholder="Priority"
-                    onChange={(e) => {
-                      onFormUpdate("priority", e.target.value);
-                    }}
+                    onChange={(e) => onFormUpdate("priority", e.target.value)}
                   />
                 </Col>
               ))}
