@@ -43,12 +43,17 @@ export const ProjectForm = () => {
     ].sort()
   );
 
+  const [validateName, setValidateName] = useState("input-field");
+  const [validateTools, setValidateTools] = useState("input-field");
+  const [validatePriority, setValidatePriority] = useState("input-field");
+  const [validateDescription, setValidateDescription] = useState("input-field");
+
   const priorityList = ["Lowest", "Low", "Medium", "High", "Highest"];
   const [isDropdown, setIsDropdown] = useState(true);
   const [formDetails, setFormDetails] = useState(formInitialDetails);
   const [buttonText, setButtonText] = useState("Send");
   const [status, setStatus] = useState({});
-  const [isTools, setIsTools] = useState(true);
+  const [isTools, setIsTools] = useState(false);
   const [countPic, setCountPic] = useState(0);
   const [pictureLink, setPictureLink] = useState([]);
 
@@ -57,8 +62,13 @@ export const ProjectForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setButtonText("Sending...");
     savePictureLink();
+    setButtonText("Sending...");
+    validate("name", "submit");
+    validate("tools", "submit");
+    validate("priority", "submit");
+    validate("description", "submit");
+
     // console.log("formDetails >>> ", formDetails);
     // let response = await fetch("http://localhost:5000/contact", {
     //   method: "POST",
@@ -94,6 +104,28 @@ export const ProjectForm = () => {
     });
   };
 
+  const validate = (category, activity) => {
+    const validated = activity === "submit" ? "validated" : "";
+    const validateValue =
+      category !== "tools" ? formDetails[category] : formDetails.tools[0];
+    if (validateValue === "" || validateValue === undefined) {
+      switch (category) {
+        case "name":
+          setValidateName(`input-field ${validated}`);
+          break;
+        case "tools":
+          setValidateTools(`input-field ${validated}`);
+          break;
+        case "priority":
+          setValidatePriority(`input-field ${validated}`);
+          break;
+        case "description":
+          setValidateDescription(`input-field ${validated}`);
+          break;
+      }
+    }
+  };
+
   const addAndSaveIool = (item) => {
     remove(tools, (i) => i === item);
     setTools(tools.sort());
@@ -108,7 +140,7 @@ export const ProjectForm = () => {
     tools.sort();
   };
 
-  const updatePictireLink = (e, idx) => {
+  const updatePictureLink = (e, idx) => {
     const abc = {};
     abc[idx] = e.target.value;
     setPictureLink({ ...pictureLink, ...abc });
@@ -117,7 +149,7 @@ export const ProjectForm = () => {
 
   const deletePictureLink = () => {
     const keys = Object.keys(pictureLink);
-    const values = Object.values(pictureLink);
+    // const values = Object.values(pictureLink);
     for (let i = keys.length - 1; i >= 0; i--) {
       console.log("count: ", countPic);
       console.log("keys: ", parseInt(keys[i]) + 1);
@@ -137,19 +169,22 @@ export const ProjectForm = () => {
     values_set.forEach((value) => {
       formDetails.pictureLink.push(value);
     });
-    console.log("formDetails >> ", formDetails);
   };
 
   return (
     <div>
       <h2>Get In Touch</h2>
-      <form>
+      <form onSubmit={handleSubmit}>
         <Row>
           <Col size={12} sm={6} className="px-1">
             <input
               type="text"
-              className="input-field"
+              className={validateName}
+              onClick={() => validate("name", "onClick")}
               value={formDetails.name}
+              onKeyPress={(e) => {
+                e.key === "Enter" && e.preventDefault();
+              }}
               placeholder="Project Name"
               onChange={(e) => onFormUpdate("name", e.target.value)}
             />
@@ -168,11 +203,17 @@ export const ProjectForm = () => {
           </Col>
 
           <Col size={12} sm={12} className="px-1">
-            <div className="input-field">
+            <div className={validateTools}>
               <div className="d-flex justify-content-between">
-                <div className="mb-2 d-inline">Languages & Frameworks</div>
+                <div className="mb-2 d-inline" style={{ fontSize: "16px" }}>
+                  Languages & Frameworks
+                </div>
                 <div className="d-inline dropdown">
-                  <button className="dropbtn" type="button">
+                  <button
+                    className="dropbtn"
+                    type="button"
+                    onMouseOver={() => validate("tools", "onClick")}
+                  >
                     Choose
                   </button>
                   <div className="dropdown-content">
@@ -219,7 +260,9 @@ export const ProjectForm = () => {
           <Col size={12} sm={12} className="px-1">
             <div className="input-field">
               <div className="d-flex justify-content-start">
-                <div className="mb-2 d-inline">Picture Link</div>
+                <div className="mb-2 d-inline" style={{ fontSize: "16px" }}>
+                  Picture Link
+                </div>
                 <button
                   type="button"
                   className="dropbtn d-inline mx-2"
@@ -245,9 +288,12 @@ export const ProjectForm = () => {
                     className="input-field input-field-size"
                     style={pictureStyle.input}
                     placeholder={`Picture link ${idx + 1}`}
+                    onKeyPress={(e) => {
+                      e.key === "Enter" && e.preventDefault();
+                    }}
                     // value={pictureLink[idx]}
                     // onInput={() => onEmpty()}
-                    onChange={(e) => updatePictireLink(e, idx)}
+                    onChange={(e) => updatePictureLink(e, idx)}
                   />
                 </div>
               ))}
@@ -259,6 +305,9 @@ export const ProjectForm = () => {
               type="text"
               className="input-field"
               value={formDetails.videoLink}
+              onKeyPress={(e) => {
+                e.key === "Enter" && e.preventDefault();
+              }}
               placeholder="Video Link"
               onChange={(e) => onFormUpdate("videoLink", e.target.value)}
             />
@@ -269,15 +318,16 @@ export const ProjectForm = () => {
               type="text"
               className="input-field"
               value={formDetails.projectLink}
+              onKeyPress={(e) => {
+                e.key === "Enter" && e.preventDefault();
+              }}
               placeholder="Project Link"
               onChange={(e) => onFormUpdate("projectLink", e.target.value)}
             />
           </Col>
-          {/* <Col size={12} sm={12} className="px-1">
-                <Form.Control className="input-field" type="file" multiple />
-              </Col> */}
+
           <Col size={12} sm={12} className="px-1">
-            <div className="input-field">
+            <div className={validatePriority}>
               <div className="mb-2">Priority</div>
               {priorityList.map((priority) => (
                 <Col key={`inline-${priority}`}>
@@ -289,7 +339,10 @@ export const ProjectForm = () => {
                     type="radio"
                     id={`inline-${priority}-1`}
                     placeholder="Priority"
-                    onChange={(e) => onFormUpdate("priority", e.target.value)}
+                    onChange={(e) => {
+                      onFormUpdate("priority", e.target.value);
+                      validate("priority", "onClick");
+                    }}
                   />
                 </Col>
               ))}
@@ -298,21 +351,23 @@ export const ProjectForm = () => {
           <Col size={12} sm={12} className="px-1">
             <textarea
               rows="6"
-              className="input-field"
+              className={validateDescription}
               value={formDetails.description}
               placeholder="Description"
+              onClick={() => validate("description", "onClick")}
+              onKeyPress={(e) => {
+                e.key === "Enter" && e.preventDefault();
+              }}
               onChange={(e) => onFormUpdate("description", e.target.value)}
             ></textarea>
           </Col>
+
           <Col size={12} className="px-1">
-            <button
-              className="form-submit"
-              onClick={handleSubmit}
-              type="submit"
-            >
+            <button className="form-submit" type="submit">
               <span>{buttonText}</span>
             </button>
           </Col>
+
           {status.message && (
             <Col>
               <p className={status.success === false ? "danger" : "success"}>
