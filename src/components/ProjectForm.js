@@ -47,13 +47,14 @@ export const ProjectForm = () => {
   const [validateTools, setValidateTools] = useState("input-field");
   const [validatePriority, setValidatePriority] = useState("input-field");
   const [validateDescription, setValidateDescription] = useState("input-field");
-
   const priorityList = ["Lowest", "Low", "Medium", "High", "Highest"];
-  const [isDropdown, setIsDropdown] = useState(true);
+
   const [formDetails, setFormDetails] = useState(formInitialDetails);
   const [buttonText, setButtonText] = useState("Send");
   const [status, setStatus] = useState({});
-  const [isTools, setIsTools] = useState(false);
+
+  const [selectIool, setSelectTool] = useState(true);
+  const [unSelectTool, setUnSelectTool] = useState(true);
   const [countPic, setCountPic] = useState(0);
   const [pictureLink, setPictureLink] = useState([]);
 
@@ -61,13 +62,10 @@ export const ProjectForm = () => {
     a.filter((e) => a.slice(a.indexOf(e) + 1).indexOf(e) === -1);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     savePictureLink();
     setButtonText("Sending...");
-    validate("name", "submit");
-    validate("tools", "submit");
-    validate("priority", "submit");
-    validate("description", "submit");
+    console.log("formDetails: ", formDetails);
 
     // console.log("formDetails >>> ", formDetails);
     // let response = await fetch("http://localhost:5000/contact", {
@@ -91,10 +89,10 @@ export const ProjectForm = () => {
   };
 
   const setformDefaultDetails = () => {
-    setFormDetails.name("");
-    setFormDetails.description("");
-    setFormDetails.date("");
-    setFormDetails.tools([]);
+    // setFormDetails.name("");
+    // setFormDetails.description("");
+    // setFormDetails.date("");
+    // setFormDetails.tools([]);
   };
 
   const onFormUpdate = (category, value) => {
@@ -104,68 +102,79 @@ export const ProjectForm = () => {
     });
   };
 
-  const validate = (category, activity) => {
-    const validated = activity === "submit" ? "validated" : "";
-    const validateValue =
+  const isValidateOnSumit = async (e) => {
+    e.preventDefault();
+    let nameCheck = validateCheck("name", "submit");
+    let toolChack = validateCheck("tools", "submit");
+    let priorityCheck = validateCheck("priority", "submit");
+    let descriptionCheck = validateCheck("description", "submit");
+    let validator = nameCheck && toolChack && priorityCheck && descriptionCheck;
+    console.log("Validator: ", validator);
+    if (validator) handleSubmit();
+  };
+
+  const validateCheck = (category, activity) => {
+    let value = true;
+    let validated = activity === "submit" ? "validated" : "";
+    let validateValue =
       category !== "tools" ? formDetails[category] : formDetails.tools[0];
     if (validateValue === "" || validateValue === undefined) {
       switch (category) {
         case "name":
           setValidateName(`input-field ${validated}`);
+          value = false;
           break;
         case "tools":
           setValidateTools(`input-field ${validated}`);
+          value = false;
           break;
         case "priority":
           setValidatePriority(`input-field ${validated}`);
+          value = false;
           break;
         case "description":
           setValidateDescription(`input-field ${validated}`);
+          value = false;
           break;
       }
     }
+    if (activity === "submit") return value;
   };
 
-  const addAndSaveIool = (item) => {
+  const addIool = (item) => {
     remove(tools, (i) => i === item);
-    setTools(tools.sort());
-    setIsDropdown(false);
+    setSelectTool(false);
     formDetails.tools.push(item);
   };
 
   const deleteIool = (item) => {
     remove(formDetails.tools, (i) => i === item);
-    setIsTools(false);
+    setUnSelectTool(false);
     tools.push(item);
     tools.sort();
   };
 
   const updatePictureLink = (e, idx) => {
-    const abc = {};
+    let abc = {};
     abc[idx] = e.target.value;
     setPictureLink({ ...pictureLink, ...abc });
-    console.log("update pictureLink >> ", pictureLink);
   };
 
   const deletePictureLink = () => {
-    const keys = Object.keys(pictureLink);
+    let keys = Object.keys(pictureLink);
     // const values = Object.values(pictureLink);
     for (let i = keys.length - 1; i >= 0; i--) {
-      console.log("count: ", countPic);
-      console.log("keys: ", parseInt(keys[i]) + 1);
       if (countPic === parseInt(keys[i]) + 1) {
-        console.log(pictureLink[("delete >> ", keys[i])]);
         delete pictureLink[keys[i]];
         break;
       }
     }
     setCountPic(countPic - 1);
-    console.log("delete pictureLink >> ", pictureLink);
   };
 
   const savePictureLink = () => {
-    const values = Object.values(pictureLink);
-    const values_set = new Set(values);
+    let values = Object.values(pictureLink);
+    let values_set = new Set(values);
     values_set.forEach((value) => {
       formDetails.pictureLink.push(value);
     });
@@ -174,13 +183,13 @@ export const ProjectForm = () => {
   return (
     <div>
       <h2>Get In Touch</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={isValidateOnSumit}>
         <Row>
           <Col size={12} sm={6} className="px-1">
             <input
               type="text"
               className={validateName}
-              onClick={() => validate("name", "onClick")}
+              onClick={() => validateCheck("name", "onClick")}
               value={formDetails.name}
               onKeyPress={(e) => {
                 e.key === "Enter" && e.preventDefault();
@@ -212,25 +221,23 @@ export const ProjectForm = () => {
                   <button
                     className="dropbtn"
                     type="button"
-                    onMouseOver={() => validate("tools", "onClick")}
+                    onMouseOver={() => validateCheck("tools", "onClick")}
                   >
                     Choose
                   </button>
                   <div className="dropdown-content">
                     {tools.map((tool, idx) =>
-                      isDropdown ? (
+                      selectIool ? (
                         <button
                           key={idx}
                           type="button"
                           className="d-block dropdown-content-item"
-                          onClick={() => {
-                            addAndSaveIool(tool);
-                          }}
+                          onClick={() => addIool(tool)}
                         >
                           {tools[idx]}
                         </button>
                       ) : (
-                        setIsDropdown(true)
+                        setSelectTool(true)
                       )
                     )}
                   </div>
@@ -238,19 +245,17 @@ export const ProjectForm = () => {
               </div>
               <div className="mt-3">
                 {formDetails.tools.map((tool, idx) =>
-                  isTools ? (
+                  unSelectTool ? (
                     <button
                       key={idx}
                       type="button"
                       className="tool-cross"
-                      onClick={() => {
-                        deleteIool(tool);
-                      }}
+                      onClick={() => deleteIool(tool)}
                     >
                       {tool} ✖
                     </button>
                   ) : (
-                    setIsTools(true)
+                    setUnSelectTool(true)
                   )
                 )}
               </div>
@@ -341,7 +346,7 @@ export const ProjectForm = () => {
                     placeholder="Priority"
                     onChange={(e) => {
                       onFormUpdate("priority", e.target.value);
-                      validate("priority", "onClick");
+                      validateCheck("priority", "onClick");
                     }}
                   />
                 </Col>
@@ -354,7 +359,7 @@ export const ProjectForm = () => {
               className={validateDescription}
               value={formDetails.description}
               placeholder="Description"
-              onClick={() => validate("description", "onClick")}
+              onClick={() => validateCheck("description", "onClick")}
               onKeyPress={(e) => {
                 e.key === "Enter" && e.preventDefault();
               }}
